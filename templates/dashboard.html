@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SignBridge AI | Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        SignBridge <span>AI</span>
+    </div>
+
+    <nav>
+
+        <a href="{{ url_for('home') }}">
+            Home
+        </a>
+
+        <a href="{{ url_for('dashboard') }}"
+           class="active">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('about') }}">
+            About
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="dashboard">
+
+    <div class="page-header">
+
+        <p class="tag">
+            SIGNBRIDGE AI
+        </p>
+
+        <h1>
+            Communication Dashboard
+        </h1>
+
+        <p>
+            Manage both directions of
+            sign-language communication.
+        </p>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+
+        <!-- SIGN TO SPEECH -->
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                📷
+            </div>
+
+            <h2>
+                Sign → Speech
+            </h2>
+
+            <p>
+                Use your webcam to recognize
+                Indian Sign Language gestures
+                using MediaPipe and Random Forest.
+            </p>
+
+            <div class="technology">
+
+                <span>MediaPipe</span>
+                <span>Random Forest</span>
+                <span>OpenCV</span>
+
+            </div>
+
+            <a
+                href="{{ url_for('communication') }}"
+                class="card-button"
+            >
+                Start Recognition →
+            </a>
+
+        </div>
+
+
+        <!-- SPEECH TO SIGN -->
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                🎤
+            </div>
+
+            <h2>
+                Speech → Sign
+            </h2>
+
+            <p>
+                Speak through the microphone
+                and convert recognized words
+                into sign-language videos.
+            </p>
+
+            <div class="technology">
+
+                <span>Speech Recognition</span>
+                <span>Sign Videos</span>
+
+            </div>
+
+            <a
+                href="{{ url_for('speech_to_sign') }}"
+                class="card-button"
+            >
+                Start Speech → Sign →
+            </a>
+
+        </div>
+
+
+        <!-- LANGUAGE -->
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                🌐
+            </div>
+
+            <h2>
+                Language Support
+            </h2>
+
+            <p>
+                Support for English and Telugu
+                communication with speech output.
+            </p>
+
+            <div class="technology">
+
+                <span>English</span>
+                <span>Telugu</span>
+                <span>Speech</span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ANALYTICS -->
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                📊
+            </div>
+
+            <h2>
+                Recognition Analytics
+            </h2>
+
+            <p>
+                View recognition confidence,
+                detected signs and communication
+                statistics.
+            </p>
+
+            <div class="technology">
+
+                <span>Confidence</span>
+                <span>History</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="system-status">
+
+        <div class="status-item">
+
+            <span class="green-dot"></span>
+
+            AI Recognition
+
+            <strong>Online</strong>
+
+        </div>
+
+        <div class="status-item">
+
+            <span class="green-dot"></span>
+
+            Speech System
+
+            <strong>Ready</strong>
+
+        </div>
+
+        <div class="status-item">
+
+            <span class="green-dot"></span>
+
+            Sign Video System
+
+            <strong>Ready</strong>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+</body>
+
+</html>

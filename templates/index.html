@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SignBridge AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+       <h2>SignBridge</h2>
+
+    
+
+    <div class="nav-buttons">
+        <a href="/" class="nav-btn active">Home</a>
+        <a href="/dashboard" class="nav-btn">Dashboard</a>
+        <a href="/about" class="nav-btn">About</a>
+    </div>
+    </nav>
+
+
+
+    </nav>
+
+
+    <main class="hero">
+
+        <div class="hero-content">
+
+            <p class="badge">
+                AI-POWERED ACCESSIBILITY
+            </p>
+
+            <h1>
+                Two-Way Indian Sign Language
+                <span>Communication</span>
+            </h1>
+
+            <p class="description">
+                Communicate using Indian Sign Language,
+                English and Telugu with real-time AI assistance.
+            </p>
+
+            <div class="buttons">
+
+                <a
+    href="{{ url_for('communication') }}"
+    class="primary-button"
+>
+    Start Communication
+</a>
+
+                <a
+    href="{{ url_for('about') }}"
+    class="secondary-button"
+>
+    Learn More
+</a>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-card">
+
+            <div class="card-header">
+                <span>Live AI Recognition</span>
+                <span class="status">● Online</span>
+            </div>
+
+            <div class="camera-placeholder">
+                ✋
+            </div>
+
+            <div class="prediction">
+
+                <small>Recognized Sign</small>
+
+                <h2>Hello</h2>
+
+                <div class="confidence">
+                    Confidence: 96.8%
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

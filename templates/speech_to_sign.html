@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Speech to Sign | SignBridge AI</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        button {
+            border: none;
+            padding: 13px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #startBtn {
+            background: #2563eb;
+            color: white;
+        }
+
+        #stopBtn {
+            background: #dc2626;
+            color: white;
+        }
+
+        #clearBtn {
+            background: #64748b;
+            color: white;
+        }
+
+        #nextBtn {
+            background: #16a34a;
+            color: white;
+        }
+
+        #stopSequenceBtn {
+            background: #9333ea;
+            color: white;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #eef2ff;
+        }
+
+        .speech-text {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 10px;
+            min-height: 60px;
+            font-size: 20px;
+        }
+
+        .words {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .word {
+            padding: 8px 14px;
+            background: #dbeafe;
+            color: #1e40af;
+            border-radius: 20px;
+        }
+
+        .video-container {
+            text-align: center;
+        }
+
+        video {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 15px;
+            background: black;
+        }
+
+        .video-word {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 15px;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>🗣️ Speech to Sign</h1>
+
+    <p>
+        Speak naturally and SignBridge AI will show the corresponding sign videos.
+    </p>
+
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>🎤 Speech Recognition</h2>
+
+        <p>
+            Click <b>Start Speaking</b> and speak into your microphone.
+        </p>
+
+        <div class="controls">
+
+            <button
+                id="startBtn"
+                onclick="startSpeaking()"
+            >
+                🎤 Start Speaking
+            </button>
+
+            <button
+                id="stopBtn"
+                onclick="stopSpeaking()"
+                disabled
+            >
+                ⏹ Stop
+            </button>
+
+            <button
+                id="clearBtn"
+                onclick="clearAll()"
+            >
+                🗑 Clear
+            </button>
+
+        </div>
+
+        <div
+            id="status"
+            class="status"
+        >
+            Ready. Click Start Speaking.
+        </div>
+
+        <div
+            id="speechText"
+            class="speech-text"
+        >
+            Your speech will appear here...
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>📝 Recognized Words</h2>
+
+        <div
+            id="words"
+            class="words"
+        ></div>
+
+    </div>
+
+
+    <div class="card video-container">
+
+        <h2>🤟 Sign Language</h2>
+
+        <div
+            id="videoWord"
+            class="video-word"
+        >
+            No sign playing
+        </div>
+
+        <video
+            id="signVideo"
+            controls
+            playsinline
+        ></video>
+
+        <div class="controls">
+
+            <button
+                id="nextBtn"
+                onclick="nextSign()"
+                disabled
+            >
+                ▶ Next Sign
+            </button>
+
+            <button
+                id="stopSequenceBtn"
+                onclick="stopSequence()"
+            >
+                ⏹ Stop Sequence
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let recognizedText = "";
+
+let signResults = [];
+
+let currentIndex = 0;
+
+let sequencePlaying = false;
+
+
+const startBtn =
+    document.getElementById("startBtn");
+
+const stopBtn =
+    document.getElementById("stopBtn");
+
+const statusBox =
+    document.getElementById("status");
+
+const speechText =
+    document.getElementById("speechText");
+
+const wordsBox =
+    document.getElementById("words");
+
+const video =
+    document.getElementById("signVideo");
+
+const videoWord =
+    document.getElementById("videoWord");
+
+const nextBtn =
+    document.getElementById("nextBtn");
+
+
+async function startSpeaking() {
+
+    startBtn.disabled = true;
+    stopBtn.disabled = false;
+
+    statusBox.className = "status";
+
+    statusBox.innerText =
+        "🎤 Listening... Please speak now.";
+
+    try {
+
+        const response =
+            await fetch("/recognize-speech", {
+                method: "POST"
+            });
+
+        const data =
+            await response.json();
+
+        if (!data.success) {
+
+            throw new Error(
+                data.error ||
+                "Speech recognition failed"
+            );
+
+        }
+
+        recognizedText =
+            data.text;
+
+        speechText.innerText =
+            recognizedText;
+
+        statusBox.className =
+            "status success";
+
+        statusBox.innerText =
+            "✅ Speech recognized successfully.";
+
+        await convertSpeechToSigns(
+            recognizedText
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        statusBox.className =
+            "status error";
+
+        statusBox.innerText =
+            "❌ " + error.message;
+
+    }
+
+    finally {
+
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+
+    }
+
+}
+
+
+function stopSpeaking() {
+
+    statusBox.innerText =
+        "Stopping...";
+
+}
+
+
+async function convertSpeechToSigns(text) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/speech-to-sign-api",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        text: text
+                    })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (!data.success) {
+
+            throw new Error(
+                data.error ||
+                "Could not convert speech"
+            );
+
+        }
+
+        signResults =
+            data.results;
+
+        currentIndex = 0;
+
+        displayWords();
+
+        if (signResults.length === 0) {
+
+            videoWord.innerText =
+                "No matching sign videos found.";
+
+            return;
+
+        }
+
+        sequencePlaying = true;
+
+        playCurrentSign();
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        statusBox.className =
+            "status error";
+
+        statusBox.innerText =
+            "❌ " + error.message;
+
+    }
+
+}
+
+
+function displayWords() {
+
+    wordsBox.innerHTML = "";
+
+    signResults.forEach(
+        (item, index) => {
+
+            const span =
+                document.createElement("span");
+
+            span.className =
+                "word";
+
+            span.innerText =
+                item.word;
+
+            wordsBox.appendChild(span);
+
+        }
+    );
+
+}
+
+
+function playCurrentSign() {
+
+    if (!sequencePlaying) {
+        return;
+    }
+
+    if (
+        currentIndex >=
+        signResults.length
+    ) {
+
+        sequencePlaying = false;
+
+        videoWord.innerText =
+            "✅ Sentence completed";
+
+        nextBtn.disabled = true;
+
+        return;
+
+    }
+
+    const current =
+        signResults[currentIndex];
+
+    videoWord.innerText =
+        "🤟 " + current.word;
+
+    video.src =
+        current.video;
+
+    video.load();
+
+    video.play()
+        .catch(error => {
+
+            console.log(
+                "Autoplay blocked:",
+                error
+            );
+
+        });
+
+    nextBtn.disabled = false;
+
+}
+
+
+video.onended = function() {
+
+    if (!sequencePlaying) {
+        return;
+    }
+
+    currentIndex++;
+
+    playCurrentSign();
+
+};
+
+
+function nextSign() {
+
+    if (
+        currentIndex <
+        signResults.length - 1
+    ) {
+
+        currentIndex++;
+
+        playCurrentSign();
+
+    }
+
+}
+
+
+function stopSequence() {
+
+    sequencePlaying = false;
+
+    video.pause();
+
+    video.currentTime = 0;
+
+    videoWord.innerText =
+        "Sequence stopped";
+
+}
+
+
+function clearAll() {
+
+    recognizedText = "";
+
+    signResults = [];
+
+    currentIndex = 0;
+
+    sequencePlaying = false;
+
+    speechText.innerText =
+        "Your speech will appear here...";
+
+    wordsBox.innerHTML = "";
+
+    video.pause();
+
+    video.removeAttribute("src");
+
+    video.load();
+
+    videoWord.innerText =
+        "No sign playing";
+
+    nextBtn.disabled = true;
+
+    statusBox.className =
+        "status";
+
+    statusBox.innerText =
+        "Ready. Click Start Speaking.";
+
+}
+
+
+</script>
+
+</body>
+
+</html>

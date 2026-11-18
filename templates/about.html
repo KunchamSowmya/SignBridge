@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SignBridge AI | About</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="logo">
+        SignBridge <span>AI</span>
+    </div>
+
+    <nav>
+
+        <a href="{{ url_for('home') }}">
+            Home
+        </a>
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <a
+            href="{{ url_for('about') }}"
+            class="active"
+        >
+            About
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="about-page">
+
+
+    <section class="about-hero">
+
+    
+
+        <h1>
+            About SignBridge AI
+        </h1>
+
+        <p>
+            An AI-powered two-way Indian Sign Language
+            communication system designed to reduce
+            communication barriers between sign-language
+            users and non-sign-language users.
+        </p>
+
+    </section>
+
+
+    <section class="about-grid">
+
+
+        <div class="info-card">
+
+            <div class="card-icon">
+                🤟
+            </div>
+
+            <h2>
+                Sign → Speech
+            </h2>
+
+            <p>
+                The webcam captures hand gestures.
+                MediaPipe extracts hand landmarks,
+                and a trained Random Forest model
+                predicts the corresponding sign.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="card-icon">
+                🎤
+            </div>
+
+            <h2>
+                Speech → Sign
+            </h2>
+
+            <p>
+                Spoken English is converted into text
+                and matched with available sign-language
+                videos.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="card-icon">
+                🧠
+            </div>
+
+            <h2>
+                Artificial Intelligence
+            </h2>
+
+            <p>
+                The system uses computer vision,
+                machine learning and speech technologies
+                to provide real-time communication.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="card-icon">
+                🌐
+            </div>
+
+            <h2>
+                Accessibility
+            </h2>
+
+            <p>
+                SignBridge AI aims to make communication
+                easier between deaf or hard-of-hearing
+                users and people unfamiliar with
+                sign language.
+            </p>
+
+        </div>
+
+    </section>
+
+
+   
+</main>
+
+
+</body>
+
+</html>

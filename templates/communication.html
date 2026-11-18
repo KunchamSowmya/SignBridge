@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Communication | SignBridge AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        .page {
+            min-height: 100vh;
+            padding: 50px 30px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .header h1 {
+            font-size: 46px;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 18px;
+        }
+
+        .cards {
+
+            max-width: 1100px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 30px;
+        }
+
+        .card {
+
+            background: white;
+
+            border-radius: 22px;
+
+            padding: 45px 35px;
+
+            text-align: center;
+
+            box-shadow:
+                0 15px 40px
+                rgba(0,0,0,0.08);
+
+            border: 1px solid #e5e7eb;
+        }
+
+        .icon {
+
+            font-size: 60px;
+
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+
+            font-size: 28px;
+
+            margin-bottom: 15px;
+        }
+
+        .card p {
+
+            color: #64748b;
+
+            line-height: 1.7;
+
+            font-size: 16px;
+
+            min-height: 80px;
+        }
+
+        .flow {
+
+            background: #f8fafc;
+
+            padding: 15px;
+
+            border-radius: 12px;
+
+            margin: 25px 0;
+
+            color: #475569;
+
+            font-size: 14px;
+        }
+
+        .button {
+
+            display: inline-block;
+
+            padding: 15px 30px;
+
+            border-radius: 12px;
+
+            background: #5146e5;
+
+            color: white;
+
+            text-decoration: none;
+
+            border: none;
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .button:hover {
+
+            background: #4338ca;
+
+            transform: translateY(-2px);
+
+        }
+
+        .back {
+
+            text-align: center;
+
+            margin-top: 40px;
+        }
+
+        .back a {
+
+            color: #5146e5;
+
+            text-decoration: none;
+
+            font-weight: 600;
+        }
+
+
+        @media(max-width: 800px) {
+
+            .cards {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .header h1 {
+
+                font-size: 35px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>
+            Choose Communication Mode
+        </h1>
+
+        <p>
+            Select how you want to communicate
+            with SignBridge AI.
+        </p>
+
+    </div>
+
+
+    <!-- CARDS -->
+
+    <div class="cards">
+
+
+        <!-- CAMERA -->
+
+        <div class="card">
+
+            <div class="icon">
+                📷
+            </div>
+
+            <h2>
+                Sign → Speech
+            </h2>
+
+            <p>
+                Show a sign using your webcam.
+                SignBridge AI detects the hand gesture,
+                recognizes the sign and generates
+                the corresponding sentence.
+            </p>
+
+            <div class="flow">
+
+                Webcam
+                →
+                MediaPipe
+                →
+                Random Forest
+                →
+                Text
+                →
+                Speech
+
+            </div>
+
+
+            <a href="/camera"
+               class="button">
+
+                📷 Start Camera
+
+            </a>
+
+        </div>
+
+
+
+        <!-- SPEECH -->
+
+        <div class="card">
+
+            <div class="icon">
+                🎤
+            </div>
+
+            <h2>
+                Speech → Sign
+            </h2>
+
+            <p>
+                Speak into your microphone.
+                SignBridge AI converts your speech
+                into text and displays the matching
+                sign-language videos.
+            </p>
+
+            <div class="flow">
+
+                Microphone
+                →
+                Speech
+                →
+                Text
+                →
+                Sign Videos
+
+            </div>
+
+
+            <a href="{{ url_for('speech_to_sign') }}"
+               class="button">
+
+                🎤 Start Speech → Sign
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="back">
+
+        <a href="{{ url_for('dashboard') }}">
+
+            ← Back to Dashboard
+
+        </a>
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>
